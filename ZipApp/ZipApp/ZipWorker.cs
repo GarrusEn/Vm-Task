@@ -8,49 +8,74 @@ namespace ZipApp
 {
     class ZipWorker
     {
-        delegate void Operation(Controller controller);
+        public Controller controller;
+        public Error error;
+        object block = new object();
 
         public ZipWorker(string[] args, Error err)
         {
             // Start the controller
-            Controller controller = new Controller(args[1], args[2]);
-            // Define the operation
-            Operation op;
+            controller = new Controller(args[1], args[2]);
+            error = err;
+
+            // Starting work
+            QueueWork(args);
+
+        }
+
+        void QueueWork(string[] args)
+        {
+            // Starting threads
+            Thread[] Threads = new Thread[Environment.ProcessorCount];
+
+
             if (args[0] == Enum.GetName(typeof(Operations), 0))
             {
-                op = Compress;
+                for (int i = 0; i < Threads.Count(); i++)
+                {
+                    Threads[i] = new Thread(Compress);
+                    Threads[i].Start();
+                }
             }
             else
             {
-                op = Decompress;
+                for (int i = 0; i < Threads.Count(); i++)
+                {
+                    Threads[i] = new Thread(Decompress);
+                    Threads[i].Start();
+                }
             }
-            // Starting work
-            QueueWork(op);
         }
-        
-        void QueueWork(Operation op)
+
+        void Compress()
         {
-            // Starting threads
-            Thread[] treadsPool = new Thread[10];
-            for (int i = 0; i < treadsPool.Count(); i++)
+            lock (block)
             {
-                treadsPool[i].Start(op);
+                // Get OriginalDataBlock
+            }
+
+            // Compress DataBlock
+
+            lock (block)
+            {
+                // Send CompressDataBlock
             }
         }
 
-
-        void Compress(Controller controller)
+        void Decompress()
         {
-            Console.WriteLine("alalalala");
-            Console.WriteLine(controller.SF);
-        }
+            lock (block)
+            {
+                // Get CompressDataBlock
+            }
 
-        void Decompress(Controller controller)
-        {
-            Console.WriteLine("dodododo");
-            Console.WriteLine(controller.SF);
-        }
+            // Decompress DataBlock
 
+            lock (block)
+            {
+                // Send OriginalDataBlock
+            }
+        }
     }
 
     class Controller
@@ -65,11 +90,6 @@ namespace ZipApp
             sourceFilePosition = 0;
         }
 
-        public string SF
-        {
-            get { return SourceFile; }
-        }
-
-
+        
     }
 }

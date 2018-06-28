@@ -20,14 +20,14 @@ namespace ZipApp
 
             if (Check(args, error))
             {
-                try
+                //try
                 {
                     Console.WriteLine("Start");
                     ZipWorker zip = new ZipWorker(args, error);
                 }
-                catch (Exception ex)
+                //catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                 //   Console.WriteLine(ex.Message);
                 }
             }
             else
@@ -59,7 +59,7 @@ namespace ZipApp
             }
 
             // Check 2 arg
-            if (isTheFileNameValid(arguments[1]))
+            if (!isTheFileNameValid(arguments[1]))
             {
                 thereAreError = true;
                 error.ErrMessage("Путь к исходому файлу содержит недопустимые символы.");
