@@ -11,6 +11,7 @@ namespace ZipApp
         public ReadWriteController controller;
         public Error error;
         object block = new object();
+        bool workIsEnd = false;
 
         public ZipWorker(string[] args, Error err)
         {
@@ -49,6 +50,9 @@ namespace ZipApp
 
         void Compress()
         {
+            // Storage space
+            
+
             lock (block)
             {
                 // Get OriginalDataBlock
@@ -76,6 +80,12 @@ namespace ZipApp
                 // Send OriginalDataBlock
             }
         }
+
+        bool WorkIsEnd
+        {
+            get { return workIsEnd; }
+        }
+                    
     }
 
     class ReadWriteController

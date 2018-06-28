@@ -27,13 +27,15 @@ namespace ZipApp
                 }
                 //catch (Exception ex)
                 {
-                 //   Console.WriteLine(ex.Message);
+                    //   Console.WriteLine(ex.Message);
                 }
             }
             else
             {
                 Console.WriteLine(error.GetErrors());
             }
+
+
 
             Console.WriteLine("DEBUG!!");
             Console.ReadLine();
