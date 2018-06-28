@@ -8,28 +8,28 @@ namespace ZipApp
 {
     class ZipWorker
     {
-        public Controller controller;
+        public ReadWriteController controller;
         public Error error;
         object block = new object();
 
         public ZipWorker(string[] args, Error err)
         {
             // Start the controller
-            controller = new Controller(args[1], args[2]);
+            controller = new ReadWriteController(args[1], args[2]);
             error = err;
 
             // Starting work
-            QueueWork(args);
+            QueueWork(args[0]);
 
         }
 
-        void QueueWork(string[] args)
+        void QueueWork(string operation)
         {
             // Starting threads
             Thread[] Threads = new Thread[Environment.ProcessorCount];
 
 
-            if (args[0] == Enum.GetName(typeof(Operations), 0))
+            if (operation == Enum.GetName(typeof(Operations), 0))
             {
                 for (int i = 0; i < Threads.Count(); i++)
                 {
@@ -78,12 +78,12 @@ namespace ZipApp
         }
     }
 
-    class Controller
+    class ReadWriteController
     {
         string SourceFile, TargetFile;
         long sourceFilePosition, sourceFileLength;
 
-        public Controller(string source, string target)
+        public ReadWriteController(string source, string target)
         {
             SourceFile = source;
             TargetFile = target;
